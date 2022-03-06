@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:siply/providers/quizProvider.dart';
 import 'package:siply/views/questions.dart';
-
 import '../colors.dart';
 
 class QuizHome extends StatefulWidget {

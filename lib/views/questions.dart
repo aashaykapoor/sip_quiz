@@ -52,94 +52,104 @@ class _QuizQuestionsState extends State<QuizQuestions>
         if (provider.isQuizEnded) {
           return QuizFinished();
         } else {
-          return Column(
-            children: [
-              SizedBox(
-                height: 60,
-              ),
-              Hero(
-                tag: 'logo',
-                child: Text(
-                  "Quiz Mania",
-                  style: TextStyle(
-                      fontSize: 50,
-                      fontFamily: "Berkshire",
-                      color: AppColors.textColor),
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 50,
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    child: LinearProgressIndicator(
-                      color: AppColors.buttonColor,
-                      backgroundColor: AppColors.textColor,
-                      value: (provider.currentQuestionIndex) / 5,
+                Hero(
+                  tag: 'logo',
+                  child: Text(
+                    "Quiz Mania",
+                    style: TextStyle(
+                        fontSize: 50,
+                        fontFamily: "Berkshire",
+                        color: AppColors.textColor),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.7,
+                      child: LinearProgressIndicator(
+                        color: AppColors.buttonColor,
+                        backgroundColor: AppColors.textColor,
+                        value: (provider.currentQuestionIndex) / 5,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    RotationTransition(
+                      turns: Tween(begin: 0.0, end: 1.0).animate(controller),
+                      child: const Text(
+                        "👑",
+                        style: TextStyle(fontSize: 35),
+                      ),
+                    )
+                  ],
+                ),
+                SlideTransition(
+                  position: _animationOffset,
+                  child: Text(
+                    provider.currentQuestion ?? "",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontFamily: "Eczar",
+                        letterSpacing: 3,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textColor),
+                  ),
+                ),
+                SizedBox(
+                  height: 70,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: FadeTransition(
+                    opacity: fadeAnimation,
+                    child: Column(
+                      children: List.generate(
+                          provider.currentOptions.length,
+                          (index) => ListTile(
+                                title: OptionButton(
+                                  optionIndex: index,
+                                  onTap: () {
+                                    provider.onTap(
+                                        index + 1,
+                                        provider
+                                            .currentOptions[index].selected);
+                                  },
+                                  isTapped:
+                                      provider.currentOptions[index].selected,
+                                  option: provider
+                                      .currentOptions[index].option_info,
+                                ),
+                              )),
                     ),
                   ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  RotationTransition(
-                    turns: Tween(begin: 0.0, end: 1.0).animate(controller),
-                    child: const Text(
-                      "👑",
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  )
-                ],
-              ),
-              SlideTransition(
-                position: _animationOffset,
-                child: Text(
-                  provider.currentQuestion ?? "",
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontFamily: "Eczar",
-                      letterSpacing: 3,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textColor),
                 ),
-              ),
-              SizedBox(
-                height: 60,
-              ),
-              FadeTransition(
-                opacity: fadeAnimation,
-                child: Column(
-                  children: List.generate(
-                      provider.currentOptions.length,
-                      (index) => ListTile(
-                            title: OptionButton(
-                              optionIndex: index,
-                              onTap: () {
-                                provider.onTap(index + 1,
-                                    provider.currentOptions[index].selected);
-                              },
-                              isTapped: provider.currentOptions[index].selected,
-                              option:
-                                  provider.currentOptions[index].option_info,
-                            ),
-                          )),
+                Spacer(),
+                NavigationButton(
+                  onBackPress: () {
+                    provider.onPreviousTap();
+                    controller.reset();
+                    controller.forward();
+                  },
+                  onForwardPress: () {
+                    provider.onNextTap();
+                    controller.reset();
+                    controller.forward();
+                  },
                 ),
-              ),
-              Spacer(),
-              NavigationButton(
-                onBackPress: () {
-                  provider.onPreviousTap();
-                  controller.reset();
-                  controller.forward();
-                },
-                onForwardPress: () {
-                  provider.onNextTap();
-                  controller.reset();
-                  controller.forward();
-                },
-              ),
-              Spacer(),
-            ],
+                Spacer(),
+              ],
+            ),
           );
         }
       }),

@@ -32,6 +32,7 @@ class QuizProvider extends ChangeNotifier {
     _questionsRepository = null;
     _quizRepository = QuizRepository();
     _questionsRepository = QuestionsRepository();
+    _questionsRepository.resetOptions();
   }
 
   loadQuestion() {

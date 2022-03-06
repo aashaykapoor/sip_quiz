@@ -6,7 +6,7 @@ class QuizRepository {
     1: Quiz(1, 'quiz_category', 'quiz_description')
   };
   static Map<int, List<int>> quiz_questions = {
-    1: [1, 2, 3],
+    1: [1, 2, 3, 4, 5],
   };
   static int current_question_index;
   static int current_quiz_id;
